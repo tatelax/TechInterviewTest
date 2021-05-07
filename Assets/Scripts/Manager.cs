@@ -5,7 +5,7 @@ public class Manager : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private bool cullEveryFrame;
-    [SerializeField] private float speed = 3F;
+    [SerializeField] private float offsetMultiplier = 20F;
     [SerializeField] private int objAmount = 10;
     [SerializeField] private float spawnRadius = 2F;
     [SerializeField] private float viewCutoff = 45f;
@@ -34,7 +34,7 @@ public class Manager : MonoBehaviour
             mousePosOnStartDrag = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, ZMouseOffset));
             isDragging = true;
         }
-                
+        
         if (Input.GetMouseButtonUp(0))
             isDragging = false;
 
@@ -48,7 +48,6 @@ public class Manager : MonoBehaviour
             UpdateObjectPositions(offset);
             mousePosOnStartDrag = currMousePosInWorld;
         }
-
         
         if(cullEveryFrame)
             CullObjects();
@@ -58,11 +57,8 @@ public class Manager : MonoBehaviour
     {
         for (int i = 0; i < objAmount; i++)
         {
-            GameObject newObj = Instantiate(prefab);
+            GameObject newObj = Instantiate(prefab, Random.insideUnitSphere * spawnRadius, Quaternion.identity);
             newObj.name = objectName + i;
-
-            Vector3 newPos = Random.insideUnitSphere * spawnRadius;
-            newObj.transform.position = newPos;
             
             instantiatedObjects.Add(newObj.transform);
         }
@@ -70,11 +66,9 @@ public class Manager : MonoBehaviour
 
     private void UpdateObjectPositions(Vector3 offset)
     {
-        if(instantiatedObjects.Count == 0) return;
-        
         for (int i = 0; i < instantiatedObjects.Count; i++)
         {
-            instantiatedObjects[i].transform.position += offset * speed;
+            instantiatedObjects[i].transform.position += offset * offsetMultiplier;
             CullObjects();
         }
     }
@@ -90,12 +84,8 @@ public class Manager : MonoBehaviour
                 cameraTransform.forward,
                 viewCutoff))
             {
-                Vector3 newPos = Random.insideUnitSphere * spawnRadius;
-                instantiatedObjects[i].transform.position = newPos;
+                instantiatedObjects[i].transform.position = Random.insideUnitSphere * spawnRadius;
             }
         }
     }
 }
-
-
-

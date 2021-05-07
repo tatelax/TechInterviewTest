@@ -5,8 +5,8 @@ public static class Helpers
     /// <summary>
     /// Tests is a Vector3 is inside a cone 
     /// </summary>
-    /// <param name="inputPoint">Position of the object we want to test</param>
-    /// <param name="outputPoint">The 'tip' of the cone</param>
+    /// <param name="inputPoint">The 'tip' of the cone</param>
+    /// <param name="outputPoint">Position of the object we want to test</param>
     /// <param name="direction">The vector direction of the cone</param>
     /// <param name="cutoff">Radius of the cone</param>
     /// <returns></returns>
